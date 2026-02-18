@@ -1,3 +1,4 @@
+//! Outbound SQLite adapter modules for persistence and schema setup.
 mod connection;
 mod hydration_log_repository;
 mod migrations;

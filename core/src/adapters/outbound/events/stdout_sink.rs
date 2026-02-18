@@ -1,3 +1,4 @@
+//! Outbound sink that writes reminder events to standard output.
 use crate::error::CoreResult;
 use crate::ports::reminder_event_sink::ReminderEventSink;
 use async_trait::async_trait;

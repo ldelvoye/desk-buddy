@@ -1,3 +1,4 @@
+//! Hydration reminder use cases built on repository port abstractions.
 use crate::domain::hydration::DEFAULT_REMINDER_MESSAGE;
 use crate::error::CoreResult;
 use crate::ports::hydration_log_repository::HydrationLogRepository;

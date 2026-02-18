@@ -1,4 +1,2 @@
-mod core_facade;
+//! Inbound adapters that invoke application use cases from external callers.
 pub mod scheduler;
-
-pub use core_facade::{CoreFacade, CoreOptions};

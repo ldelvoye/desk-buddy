@@ -1,3 +1,4 @@
+//! SQLite implementation of the settings repository port.
 use crate::error::CoreResult;
 use crate::ports::settings_repository::SettingsRepository;
 use async_trait::async_trait;

@@ -1,3 +1,4 @@
+//! SQLite schema bootstrap for required core tables.
 use crate::error::CoreResult;
 use sqlx::SqlitePool;
 

@@ -1,3 +1,4 @@
+//! Output port for persisting and querying hydration reminder logs.
 use crate::error::CoreResult;
 use async_trait::async_trait;
 

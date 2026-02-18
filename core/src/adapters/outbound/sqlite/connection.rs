@@ -1,3 +1,4 @@
+//! SQLite connection factory for creating the shared core connection pool.
 use crate::error::CoreResult;
 use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions};
 use sqlx::SqlitePool;

@@ -1,3 +1,4 @@
+//! Output port for emitting reminder events to external channels.
 use crate::error::CoreResult;
 use async_trait::async_trait;
 

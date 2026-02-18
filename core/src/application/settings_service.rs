@@ -1,3 +1,4 @@
+//! Settings use cases for reading and writing reminder configuration.
 use crate::domain::hydration::ReminderConfig;
 use crate::error::CoreResult;
 use crate::ports::settings_repository::SettingsRepository;

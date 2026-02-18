@@ -1,3 +1,4 @@
+//! Tokio-backed scheduler loop for periodic hydration reminders.
 use crate::application::hydration_service::HydrationService;
 use crate::domain::hydration::ReminderConfig;
 use crate::error::{CoreError, CoreResult};

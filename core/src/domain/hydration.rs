@@ -1,3 +1,4 @@
+//! Domain types and policies for hydration reminder behavior.
 use std::time::Duration;
 
 pub const DEFAULT_REMINDER_MESSAGE: &str = "Reminder: drink water!";

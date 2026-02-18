@@ -1,3 +1,4 @@
+//! SQLite implementation of the hydration log repository port.
 use crate::error::CoreResult;
 use crate::ports::hydration_log_repository::HydrationLogRepository;
 use async_trait::async_trait;

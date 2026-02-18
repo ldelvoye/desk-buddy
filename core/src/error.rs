@@ -1,3 +1,4 @@
+//! Shared core error types and result alias used across modules.
 use std::fmt::{Display, Formatter};
 
 pub type CoreResult<T> = Result<T, CoreError>;

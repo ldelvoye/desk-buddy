@@ -1,3 +1,4 @@
+//! Output port for reading and writing persisted settings.
 use crate::error::CoreResult;
 use async_trait::async_trait;
 
