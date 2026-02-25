@@ -1,3 +1,11 @@
+# env files
+.env
+
+# Build artifacts
 target/
 
+# Personal files
 REQUIREMENTS.md
+
+# Database files
+*.db
