@@ -5,6 +5,13 @@ pub type CoreResult<T> = Result<T, CoreError>;
 
 #[derive(Debug)]
 pub enum CoreError {
+    Io(std::io::Error),
+    ConfigParse(toml::de::Error),
+    InvalidConfigValue {
+        field: &'static str,
+        value: String,
+        expected: &'static str,
+    },
     Sqlite(sqlx::Error),
     InvalidPersistedValue { field: &'static str, value: i64 },
     SchedulerAlreadyRunning,
@@ -14,6 +21,16 @@ pub enum CoreError {
 impl Display for CoreError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::Io(err) => write!(f, "io error: {err}"),
+            Self::ConfigParse(err) => write!(f, "config parse error: {err}"),
+            Self::InvalidConfigValue {
+                field,
+                value,
+                expected,
+            } => write!(
+                f,
+                "invalid config value for {field}: {value} (expected {expected})"
+            ),
             Self::Sqlite(err) => write!(f, "sqlite error: {err}"),
             Self::InvalidPersistedValue { field, value } => {
                 write!(f, "invalid persisted value for {field}: {value}")
@@ -25,6 +42,18 @@ impl Display for CoreError {
 }
 
 impl std::error::Error for CoreError {}
+
+impl From<std::io::Error> for CoreError {
+    fn from(value: std::io::Error) -> Self {
+        Self::Io(value)
+    }
+}
+
+impl From<toml::de::Error> for CoreError {
+    fn from(value: toml::de::Error) -> Self {
+        Self::ConfigParse(value)
+    }
+}
 
 impl From<sqlx::Error> for CoreError {
     fn from(value: sqlx::Error) -> Self {

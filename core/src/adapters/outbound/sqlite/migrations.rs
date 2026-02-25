@@ -1,4 +1,5 @@
 //! SQLite schema bootstrap for required core tables.
+use crate::domain::hydration::ReminderConfig;
 use crate::error::CoreResult;
 use sqlx::SqlitePool;
 
@@ -24,6 +25,21 @@ pub async fn run_migrations(pool: &SqlitePool) -> CoreResult<()> {
         )
         "#,
     )
+    .execute(pool)
+    .await?;
+
+    // Seed a singleton default row so settings are visible in DB tools
+    // and runtime reads have a concrete persisted value.
+    let default_interval: i64 =
+        i64::try_from(ReminderConfig::default().interval_minutes).unwrap_or(i64::MAX);
+    sqlx::query(
+        r#"
+        INSERT INTO hydration_settings (id, interval_minutes)
+        VALUES (1, ?1)
+        ON CONFLICT(id) DO NOTHING
+        "#,
+    )
+    .bind(default_interval)
     .execute(pool)
     .await?;
 

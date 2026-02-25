@@ -11,6 +11,7 @@ use crate::error::CoreResult;
 use crate::ports::reminder_event_sink::ReminderEventSink;
 use sqlx::SqlitePool;
 use std::sync::Arc;
+use std::{env, path::PathBuf};
 
 #[derive(Debug, Clone)]
 pub struct CoreOptions {
@@ -29,13 +30,23 @@ impl CoreOptions {
 impl Default for CoreOptions {
     fn default() -> Self {
         Self {
-            database_url: "sqlite://desk-buddy.db".to_string(),
+            database_url: default_database_url(),
         }
     }
 }
 
 pub struct CoreBuilder {
     options: CoreOptions,
+}
+
+fn default_database_url() -> String {
+    // Use a stable per-user app-data location for packaged desktop behavior.
+    let base_dir: PathBuf = env::var_os("LOCALAPPDATA")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| env::current_dir().unwrap_or_else(|_| PathBuf::from(".")));
+    let db_path: PathBuf = base_dir.join("DeskBuddy").join("desk-buddy.db");
+    let normalized_path: String = db_path.to_string_lossy().replace('\\', "/");
+    format!("sqlite://{normalized_path}")
 }
 
 impl CoreBuilder {

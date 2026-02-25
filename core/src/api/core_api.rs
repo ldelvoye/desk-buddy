@@ -44,6 +44,8 @@ impl CoreApi {
             .settings_service
             .set_hydration_interval_minutes(interval_minutes)
             .await?;
+        // TODO: Trigger runtime scheduler reconfiguration so interval changes
+        // take effect immediately without requiring scheduler restart.
         Ok(config.interval_minutes)
     }
 

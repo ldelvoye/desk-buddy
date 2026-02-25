@@ -10,4 +10,4 @@ pub mod ports;
 pub use domain::hydration::{ReminderConfig, DEFAULT_REMINDER_MESSAGE};
 pub use error::{CoreError, CoreResult};
 pub use api::CoreApi;
-pub use bootstrap::{CoreBuilder, CoreOptions, CoreRuntime};
+pub use bootstrap::{ConfigResolver, CoreBuilder, CoreOptions, CoreRuntime, RuntimeConfig};

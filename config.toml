@@ -1,0 +1,10 @@
+# Desk Buddy runtime configuration.
+# Precedence: env vars > this file > built-in defaults.
+
+[bootstrap]
+# Optional SQLite URL override for core bootstrap behavior.
+# Leave unset to use `%LOCALAPPDATA%/DeskBuddy/desk-buddy.db`.
+# database_url = "sqlite://C:/Users/delvo/AppData/Local/DeskBuddy/desk-buddy.db"
+
+# Runtime user settings (for example hydration interval) are persisted in SQLite
+# and are expected to be changed via API/UI, not this file.

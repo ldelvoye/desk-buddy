@@ -5,5 +5,7 @@ edition = "2024"
 
 [dependencies]
 async-trait = "0.1"
+serde = { version = "1", features = ["derive"] }
 sqlx = { version = "0.8", default-features = false, features = ["sqlite", "runtime-tokio"] }
+toml = "0.8"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "time"] }
