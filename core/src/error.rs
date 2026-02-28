@@ -7,6 +7,7 @@ pub type CoreResult<T> = Result<T, CoreError>;
 pub enum CoreError {
     Io(std::io::Error),
     ConfigParse(toml::de::Error),
+    SqliteMigrate(sqlx::migrate::MigrateError),
     InvalidConfigValue {
         field: &'static str,
         value: String,
@@ -23,6 +24,7 @@ impl Display for CoreError {
         match self {
             Self::Io(err) => write!(f, "io error: {err}"),
             Self::ConfigParse(err) => write!(f, "config parse error: {err}"),
+            Self::SqliteMigrate(err) => write!(f, "sqlite migration error: {err}"),
             Self::InvalidConfigValue {
                 field,
                 value,
@@ -52,6 +54,12 @@ impl From<std::io::Error> for CoreError {
 impl From<toml::de::Error> for CoreError {
     fn from(value: toml::de::Error) -> Self {
         Self::ConfigParse(value)
+    }
+}
+
+impl From<sqlx::migrate::MigrateError> for CoreError {
+    fn from(value: sqlx::migrate::MigrateError) -> Self {
+        Self::SqliteMigrate(value)
     }
 }
 

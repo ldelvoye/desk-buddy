@@ -5,7 +5,7 @@
 - [x] Define a stable production DB path policy (Windows app-data location) instead of relying on relative paths.
 - [x] Ensure DB parent directories are created before SQLite connect in packaged app mode.
 - [x] Add SQLite startup pragmas policy (WAL mode, busy timeout, foreign_keys).
-- [ ] Replace ad-hoc schema setup with versioned migrations strategy.
+- [x] Replace ad-hoc schema setup with versioned migrations strategy.
 
 ## Settings model and schema
 

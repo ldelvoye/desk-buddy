@@ -30,6 +30,16 @@ The current module layout follows a hexagonal style with explicit adapter direct
 
 This creates a runtime object with a pure API for callers.
 
+### 1.1 Bootstrap configuration precedence
+
+Bootstrap configuration is resolved by `ConfigResolver` with this precedence:
+
+1. environment variables
+2. `config.toml` (`[bootstrap]` section)
+3. built-in defaults
+
+Current bootstrap config concerns are system/runtime wiring only (for example database URL). User-facing runtime settings are stored in SQLite and modified through API methods.
+
 ### 2. One-off hydration reminder
 
 `CoreApi::trigger_hydration_reminder_once`:
@@ -75,6 +85,21 @@ This creates a runtime object with a pure API for callers.
 
 - `hydration_reminder_logs`
 - `hydration_settings`
+
+## Migration Strategy
+
+- Migrations are versioned SQL files under `core/migrations/`.
+- Startup runs `run_migrations`, which uses SQLx migrator execution against the configured SQLite database.
+- Migrations are checked on each startup and only pending versions are applied.
+
+## SQLite Runtime Policy
+
+SQLite connections are configured with:
+
+- WAL journaling mode
+- busy timeout
+- foreign key enforcement
+- synchronous normal mode (paired with WAL)
 
 ## Scope Notes
 
