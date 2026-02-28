@@ -1,7 +1,7 @@
 //! Pure core API that delegates to application services and ports.
 use crate::application::hydration_service::HydrationService;
 use crate::application::settings_service::SettingsService;
-use crate::domain::hydration::ReminderConfig;
+use crate::domain::hydration::{ReminderConfig, SnoozeConfig};
 use crate::error::CoreResult;
 use crate::ports::reminder_event_sink::ReminderEventSink;
 use std::sync::Arc;
@@ -52,6 +52,20 @@ impl CoreApi {
     /// Reads the effective hydration reminder configuration.
     pub async fn hydration_reminder_config(&self) -> CoreResult<ReminderConfig> {
         self.settings_service.hydration_reminder_config().await
+    }
+
+    /// Persists hydration snooze minutes and returns the normalized value.
+    pub async fn set_hydration_snooze_minutes(&self, snooze_minutes: u64) -> CoreResult<u64> {
+        let config: SnoozeConfig = self
+            .settings_service
+            .set_hydration_snooze_minutes(snooze_minutes)
+            .await?;
+        Ok(config.snooze_minutes)
+    }
+
+    /// Reads the effective hydration snooze configuration.
+    pub async fn hydration_snooze_config(&self) -> CoreResult<SnoozeConfig> {
+        self.settings_service.hydration_snooze_config().await
     }
 
     pub(crate) fn hydration_service(&self) -> HydrationService {

@@ -2,10 +2,17 @@
 use std::time::Duration;
 
 pub const DEFAULT_REMINDER_MESSAGE: &str = "Reminder: drink water!";
+pub const DEFAULT_REMINDER_MINUTES: u64 = 30;
+pub const DEFAULT_SNOOZE_MINUTES: u64 = 10;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ReminderConfig {
     pub interval_minutes: u64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct SnoozeConfig {
+    pub snooze_minutes: u64,
 }
 
 impl ReminderConfig {
@@ -22,10 +29,27 @@ impl ReminderConfig {
     }
 }
 
+impl SnoozeConfig {
+    /// Creates a snooze config and clamps the value to at least one minute.
+    pub fn new(snooze_minutes: u64) -> Self {
+        Self {
+            snooze_minutes: snooze_minutes.max(1),
+        }
+    }
+}
+
 impl Default for ReminderConfig {
     fn default() -> Self {
         Self {
-            interval_minutes: 30,
+            interval_minutes: DEFAULT_REMINDER_MINUTES,
+        }
+    }
+}
+
+impl Default for SnoozeConfig {
+    fn default() -> Self {
+        Self {
+            snooze_minutes: DEFAULT_SNOOZE_MINUTES,
         }
     }
 }
@@ -42,5 +66,15 @@ mod tests {
     #[test]
     fn zero_interval_is_clamped_to_one_minute() {
         assert_eq!(ReminderConfig::new(0).interval_minutes, 1);
+    }
+
+    #[test]
+    fn default_snooze_is_10_minutes() {
+        assert_eq!(SnoozeConfig::default().snooze_minutes, 10);
+    }
+
+    #[test]
+    fn zero_snooze_is_clamped_to_one_minute() {
+        assert_eq!(SnoozeConfig::new(0).snooze_minutes, 1);
     }
 }

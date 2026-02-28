@@ -47,4 +47,33 @@ impl SettingsRepository for SqliteSettingsRepository {
 
         Ok(interval)
     }
+
+    async fn set_hydration_snooze_minutes(&self, snooze_minutes: u64) -> CoreResult<()> {
+        sqlx::query(
+            r#"
+            UPDATE hydration_settings
+            SET snooze_minutes = ?1
+            WHERE id = 1
+            "#,
+        )
+        .bind(i64::try_from(snooze_minutes).unwrap_or(i64::MAX))
+        .execute(&self.pool)
+        .await?;
+
+        Ok(())
+    }
+
+    async fn hydration_snooze_minutes(&self) -> CoreResult<Option<u64>> {
+        let maybe_snooze: Option<i64> = sqlx::query_scalar::<_, i64>(
+            "SELECT snooze_minutes FROM hydration_settings WHERE id = 1",
+        )
+        .fetch_optional(&self.pool)
+        .await?;
+
+        let snooze_minutes: Option<u64> = maybe_snooze
+            .and_then(|raw: i64| u64::try_from(raw).ok())
+            .map(|value: u64| value.max(1));
+
+        Ok(snooze_minutes)
+    }
 }

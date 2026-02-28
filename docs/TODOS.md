@@ -13,7 +13,7 @@
   - singleton row (`id = 1`) with one column per setting, or
   - key-value settings table for extensibility.
 - [x] Add bootstrap behavior for missing settings row if we want a non-empty default row visible in DB tools.
-- [ ] Add a migration path for future settings fields without breaking existing local DBs.
+- [x] Add a migration path for future settings fields without breaking existing local DBs.
 
 ## Core feature data model
 

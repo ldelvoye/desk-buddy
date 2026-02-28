@@ -77,7 +77,7 @@ impl CoreBuilder {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::domain::hydration::ReminderConfig;
+    use crate::domain::hydration::{ReminderConfig, SnoozeConfig};
 
     #[tokio::test]
     async fn trigger_once_writes_to_sqlite() -> CoreResult<()> {
@@ -101,6 +101,21 @@ mod tests {
         let persisted: u64 = runtime.api().set_hydration_interval_minutes(0).await?;
         assert_eq!(persisted, 1);
         assert_eq!(runtime.api().hydration_reminder_config().await?.interval_minutes, 1);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn hydration_snooze_defaults_then_round_trips() -> CoreResult<()> {
+        let runtime: CoreRuntime = CoreBuilder::new(CoreOptions::in_memory()).build().await?;
+
+        assert_eq!(
+            runtime.api().hydration_snooze_config().await?.snooze_minutes,
+            SnoozeConfig::default().snooze_minutes
+        );
+
+        let persisted: u64 = runtime.api().set_hydration_snooze_minutes(0).await?;
+        assert_eq!(persisted, 1);
+        assert_eq!(runtime.api().hydration_snooze_config().await?.snooze_minutes, 1);
         Ok(())
     }
 
